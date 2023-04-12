@@ -15,7 +15,7 @@ export class AppComponent implements  AfterViewInit{
   @ViewChild('canvas')
   private canvasRef!: ElementRef; 
 
-  @Input() public rotationSpeedX: number = 0.05
+  @Input() public rotationSpeedX: number = 0.01
   @Input() public size = 200
 
   @Input() cameraZ: number = 400
@@ -28,9 +28,10 @@ export class AppComponent implements  AfterViewInit{
     return this.canvasRef.nativeElement
   }
   // private loader = new THREE.TextureLoader
+  private blue: THREE.Color = new THREE.Color( 0xff8001)
   private geometry = new THREE.BoxGeometry( 1, 1, 1)
   private material = new THREE.MeshLambertMaterial({
-    color: 0x79BEF4
+    color: this.blue
   })
   private cube: THREE.Mesh = new THREE.Mesh( this.geometry, this.material)
 
@@ -38,12 +39,20 @@ export class AppComponent implements  AfterViewInit{
 
   private scene!: THREE.Scene
 
+  private directionalLight: THREE.DirectionalLight = new THREE.DirectionalLight( 0xffffff, 0.5)
+
   
   private createScene(){
     //* Scene
     this.scene = new THREE.Scene()
+    this.directionalLight.position.y = 0
+    this.directionalLight.position.z = 1
+    this.scene.add( this.directionalLight)
     this.scene.background = new THREE.Color(0xffffff)
     this.scene.add( this.cube)
+    this.scene.add( this.cube)
+
+    
 
     //* Camera
     let aspectRatio = this.getAspectRatio()
